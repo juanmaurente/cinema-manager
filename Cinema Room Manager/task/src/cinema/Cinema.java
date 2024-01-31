@@ -1,5 +1,3 @@
-package cinema;
-
 import java.util.Scanner;
 
 public class Cinema {
@@ -13,12 +11,18 @@ public class Cinema {
         System.out.println("Enter the number of seats in each row:");
         int seatsPerRow = sc.nextInt();
 
+        // Initialize cinema array with "S" values
         String[][] cinema = new String[totalRows][seatsPerRow];
+        for (int i = 0; i < totalRows; i++) {
+            for (int j = 0; j < seatsPerRow; j++) {
+                cinema[i][j] = "S";
+            }
+        }
 
-        //Print a menu with  three items
-        //1. Show the seats
-        //2. Buy a ticket
-        //0. Exit to stop the program
+        // Print a menu with three items
+        // 1. Show the seats
+        // 2. Buy a ticket
+        // 0. Exit to stop the program
 
         int choice;
         do {
@@ -28,8 +32,8 @@ public class Cinema {
             System.out.println("0. Exit");
 
             // Get user input for menu choice
-            System.out.print("Enter your choice: ");
             choice = sc.nextInt();
+            System.out.println();
 
             // Perform actions based on user choice
             switch (choice) {
@@ -37,7 +41,7 @@ public class Cinema {
                     showSeats(cinema);
                     break;
                 case 2:
-                    buyTicket(cinema);
+                    buyTicket(cinema, totalRows, seatsPerRow);
                     break;
                 case 0:
                     System.out.println("Exiting the program. Goodbye!");
@@ -46,13 +50,16 @@ public class Cinema {
                     System.out.println("Invalid choice. Please enter a valid option.");
             }
         } while (choice != 0);
+
+        // Close the scanner
+        sc.close();
     }
 
     private static void showSeats(String[][] cinema) {
         System.out.println("Cinema: ");
 
         // Print Column numbers
-        System.out.print("   ");
+        System.out.print("  ");
         for (int col = 1; col <= cinema[0].length; col++) {
             System.out.printf("%-2d", col);
         }
@@ -63,21 +70,20 @@ public class Cinema {
             System.out.printf("%-2d", row + 1); // Number of line or row
 
             for (int col = 0; col < cinema[row].length; col++) {
-                cinema[row][col] = "S";
                 System.out.printf("%-2s", cinema[row][col]);
             }
             System.out.println();
         }
     }
 
-
-    // read two integer a row number seat and a seat in that row [row][seat of row]
+    private static void buyTicket(String[][] cinema, int totalRows, int seatsPerRow) {
+        Scanner sc = new Scanner(System.in);
+        // read two integers: a row number and a seat in that row [row][seat of row]
         System.out.println("Enter a row number:");
         int rowSelected = sc.nextInt();
         System.out.println("Enter a seat number in that row:");
         int seatSelected = sc.nextInt();
         int ticketPrice = 0;
-
 
         // Define ticketPrice according to the selected seat
         if (totalRows * seatsPerRow >= 60) {
@@ -91,30 +97,31 @@ public class Cinema {
         }
 
         System.out.printf("Ticket price: $%d\n", ticketPrice);
-
+        System.out.println();
         System.out.println("Cinema: ");
 
-        // Imprimir números de columnas
-        System.out.print("   ");
+        // Print column numbers
+        System.out.print("  ");
         for (int col = 1; col <= cinema[0].length; col++) {
             System.out.printf("%-2d", col);
         }
         System.out.println();
 
-        // Print seats with the chosen seat by B
+        // Update the selected seat with 'B' and print the seats
         for (int row = 0; row < cinema.length; row++) {
-            System.out.printf("%-2d", row + 1); // Número de fila
+            System.out.printf("%-2d", row + 1);
 
             for (int col = 0; col < cinema[row].length; col++) {
                 if (row + 1 == rowSelected && col + 1 == seatSelected) {
                     cinema[row][col] = "B";
-                } else {
-                    cinema[row][col] = "S";
                 }
 
                 System.out.printf("%-2s", cinema[row][col]);
             }
-            System.out.println(); // Nueva línea después de cada fila
+            System.out.println();
         }
+
+        // Close the scanner
+        sc.close();
     }
 }
